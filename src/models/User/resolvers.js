@@ -5,6 +5,30 @@ export default {
   Query: {
     users: Resolvers.Query.list(Model),
     user: Resolvers.Query.single(Model),
+    profitableUsers: (_, args) => {
+      return new Promise((accept) => {
+        const users = [] 
+        Promise.all([db.get('User'), db.get('Vehicle'), db.get('Order')])
+        .then((promises) => {
+          const users = promises[0]
+          const vehicles = promises[1]
+          const orders = promises[2]
+          console.log(vehicles)
+          accept(users.map((user) => {
+            let spend = 0
+            vehicles.filter(v => v.userId === user.id).forEach((vehicle) => 
+              orders.filter(o => o.vehicleId === vehicle.id).forEach((order) => {
+                spend += order.price
+              })
+            )
+            return {
+              user,
+              spend,
+            }
+          }).sort((a, b) => b.spend - a.spend).slice(0, args.top))
+        })
+      })
+    },
   },
   Mutation: {
     deleteUser: Resolvers.Mutation.delete(Model),
@@ -15,3 +39,15 @@ export default {
     },
   },
 }
+
+/*(user) => {
+  const vehicles = (await db.get('Vehicle')).filter(vehicle => vehicle.userId === obj.id)
+  let spend = 0
+  (await db.get('Order')).filter(order => order.vehicleId = vehicle.id).forEach((order) => {
+    spend += order.price
+  })
+  users.push({
+    user,
+    spend,
+  })
+}*/

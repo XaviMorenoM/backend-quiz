@@ -8,12 +8,18 @@ class Database {
   get(modelName, args) {
     const model = require(`./models/${modelName}/model`).default
     const modelData = this.data[modelName]
-    console.log(args)
-    if (!args) return modelData.map(m => new model(m))
-    return modelData[args.single ? 'find' : 'filter'](
-      model => true
-    )
-
+    const { filters, single, } = args || {}
+    const method = single ? 'find' : 'filter'
+    if (!filters) return modelData.map(m => new model(m))
+    const props = Object.keys(filters)
+    const filtered = modelData[method]((m) => {
+      let valid = true
+      props.forEach((prop) => {
+        if (m[prop] !== filters[prop]) valid = false
+      })
+      return valid
+    })
+    return single ? new model(filtered) : filtered.map(m => new model(m))
   }
 
   set(modelName, datum) {

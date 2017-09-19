@@ -10,7 +10,8 @@ type User {
 
 type Query {
   users: [User]
-  user: User
+  user(id: Int!): User
+  profitableUsers(top: Int!): [UserSpend]
 }
 
 type Mutation {
@@ -24,4 +25,10 @@ input DeleteUserInput {
 type DeleteUserPayload {
   id: Int!
   error: String
-}`
+}
+
+type UserSpend {
+  user: User,
+  spend: Int!
+}
+`

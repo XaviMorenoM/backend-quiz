@@ -5,8 +5,8 @@ export const Resolvers = {
     list: (Model) => (unusedFirstParameter, args, context) => {
       return db.get(Model.name)
     },
-    single: (Model) => (unusedFirstParameter, args) => {
-      return db.get(Model.name, {...args, single: true, })
+    single: (Model) => (unusedFirstParameter, filters) => {
+      return db.get(Model.name, {filters, single: true, })
     }
   },
   Mutation: {
