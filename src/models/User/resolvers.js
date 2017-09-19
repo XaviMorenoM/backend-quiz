@@ -7,7 +7,7 @@ export default {
     user: Resolvers.Query.single(Model),
     profitableUsers: (_, args) => {
       return new Promise((accept) => {
-        const users = [] 
+        const users = []
         Promise.all([db.get('User'), db.get('Vehicle'), db.get('Order')])
         .then((promises) => {
           const users = promises[0]
@@ -16,7 +16,7 @@ export default {
           console.log(vehicles)
           accept(users.map((user) => {
             let spend = 0
-            vehicles.filter(v => v.userId === user.id).forEach((vehicle) => 
+            vehicles.filter(v => v.userId === user.id).forEach((vehicle) =>
               orders.filter(o => o.vehicleId === vehicle.id).forEach((order) => {
                 spend += order.price
               })
@@ -37,17 +37,6 @@ export default {
     vehicles: (obj, args, context) => {
       return db.get('Vehicle').filter(vehicle => vehicle.userId === obj.id)
     },
+    displayName: obj => `${obj.firstName} ${obj.lastName.charAt(0)}.`,
   },
 }
-
-/*(user) => {
-  const vehicles = (await db.get('Vehicle')).filter(vehicle => vehicle.userId === obj.id)
-  let spend = 0
-  (await db.get('Order')).filter(order => order.vehicleId = vehicle.id).forEach((order) => {
-    spend += order.price
-  })
-  users.push({
-    user,
-    spend,
-  })
-}*/

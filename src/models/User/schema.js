@@ -5,6 +5,8 @@ type User {
   firstName: String
   lastName: String
   email: String
+  #computed: displayName = first name and last initial
+  displayName: String
   vehicles: [Vehicle]
 }
 
