@@ -4,6 +4,7 @@ import db from '../../db'
 export default {
   Query: {
     users: Resolvers.Query.list(Model),
+    user: Resolvers.Query.single(Model),
   },
   Mutation: {
     deleteUser: Resolvers.Mutation.delete(Model),

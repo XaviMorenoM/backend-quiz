@@ -5,9 +5,15 @@ class Database {
     this.data = data
   }
 
-  get(modelName) {
+  get(modelName, args) {
     const model = require(`./models/${modelName}/model`).default
-    return this.data[modelName].map(m => new model(m))
+    const modelData = this.data[modelName]
+    console.log(args)
+    if (!args) return modelData.map(m => new model(m))
+    return modelData[args.single ? 'find' : 'filter'](
+      model => true
+    )
+
   }
 
   set(modelName, datum) {
