@@ -13,7 +13,6 @@ export default {
           const users = promises[0]
           const vehicles = promises[1]
           const orders = promises[2]
-          console.log(vehicles)
           accept(users.map((user) => {
             let spend = 0
             vehicles.filter(v => v.userId === user.id).forEach((vehicle) =>

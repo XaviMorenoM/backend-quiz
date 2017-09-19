@@ -34,7 +34,7 @@ describe('Tests that already pass', () => {
         id
       }
     }`
-    
+
     const result2 = await graphql(Schema, allUsersQuery, null, null)
     expect(result2.data.users.length).toEqual(9)
   })
@@ -210,7 +210,7 @@ describe('Tests for applicant to make pass', () => {
          year
          make
          model
-       } 
+       }
       }`
       const result2 = await graphql(Schema, vehiclesQuery, null, null)
       expect(result2.data.vehicles[4]).toEqual(expected)

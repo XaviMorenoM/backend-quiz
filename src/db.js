@@ -22,9 +22,21 @@ class Database {
     return single ? new model(filtered) : filtered.map(m => new model(m))
   }
 
-  set(modelName, datum) {
-    // You should write this method
-    // and use it for inserts and updates
+  set(modelName, datum, update) {
+    const data = this.data[modelName]
+    if (update) {
+      const existingModel = data.find(obj => obj.id === datum.id)
+      if (!existingModel) throw new Error(`There's no existing ${modelName} with id '${datum.id}'`)
+      const updatedModel = {
+        ...existingModel,
+        ...datum,
+      }
+      data[data.indexOf(existingModel)] = updatedModel
+      return updatedModel
+    }
+    datum.id = data.length + 1
+    data.push(datum)
+    return datum
   }
 
   delete(modelName, datum) {
